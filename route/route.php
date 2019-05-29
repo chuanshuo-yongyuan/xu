@@ -12,9 +12,6 @@
 Route::get('admin', function () {
     return view('admin');
 });
-Route::get('business', function () {
-    return view('business');
-});
 
 Route::miss(function () {
     return json([
