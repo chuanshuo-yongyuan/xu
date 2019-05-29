@@ -1,0 +1,17 @@
+<?php
+
+namespace {%namespace%};
+
+class {%className%}Transformer extends Transformer
+{
+   public function transform($item,$info = false)
+   {
+      if (empty($item)) {
+        return [];
+      }
+      $item->status_text = $item->status_text;
+
+      return $item;
+   }
+}
+

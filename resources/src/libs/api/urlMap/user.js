@@ -1,0 +1,9 @@
+/**
+ * 使用 request 时候的请求参数,
+ * 格式为: name: {url,method:'get|post'}
+ * @type {{GetUserInfo: {url: string, method: string}, GetUserList: {url: string, method: string}}}
+ */
+
+export default {
+  test: { url: 'test', method: 'post' }
+}

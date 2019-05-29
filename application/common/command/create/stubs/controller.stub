@@ -1,0 +1,56 @@
+<?php
+
+namespace {%namespace%};
+
+use app\common\event\{%className%}Event;
+use app\common\validate\{%className%}Validate;
+
+class {%className%}Controller extends Controller
+{
+    private ${%className%}Event;
+
+    public function __construct({%className%}Event ${%className%}Event)
+    {
+        parent::__construct();
+        $this->{%className%}Event = ${%className%}Event;
+    }
+
+    public function lists()
+    {
+        $where = [];
+        $page = input('page/d', 1);
+        $this->{%className%}Event->lists($where, $page);
+    }
+
+    public function info()
+    {
+        $this->isId();
+        $id = input('id/d');
+        $this->{%className%}Event->infoById($id);
+    }
+
+    public function add()
+    {
+        $this->isPost();
+        $fromData = input('post.');
+        $this->validateData({%className%}Validate::class, $fromData);
+        $result = $this->{%className%}Event->add($fromData);
+        $this->checkSuccessOrError($result, 'add_{%className%}');
+    }
+
+    public function edit()
+    {
+        $this->isPostAndId();
+        $fromData = input('post.');
+        $id = $fromData['id'];
+        unset($fromData['id']);
+        $this->validateData({%className%}Validate::class, $fromData);
+        $result = $this->{%className%}Event->editById($fromData, $id);
+        $this->checkSuccessOrError($result, 'edit_{%className%}');
+    }
+
+    public function status()
+    {
+        $this->statusAction('{%className%}');
+    }
+}

@@ -1,0 +1,40 @@
+<?php
+
+namespace {%namespace%};
+
+use app\common\model\{%className%}Model;
+
+class {%className%}Service
+{
+    public static function lists($where = [], $page = 1, $order = 'sort desc')
+    {
+        return {%className%}Model::where($where)->page($page)->order($order)->select();
+    }
+
+    public static function infoById($id)
+    {
+        return {%className%}Model::find($id);
+    }
+
+    public static function add($data)
+    {
+        unset($data['id']);
+        return {%className%}Model::create($data);
+    }
+
+    public static function edit($data, $condition)
+    {
+        return {%className%}Model::update($data, $condition);
+    }
+
+    public static function editById($data, $id)
+    {
+        return self::edit($data, ['id' => $id]);
+    }
+
+    public static function count($where = [])
+    {
+        return {%className%}Model::where($where)->count();
+    }
+}
+

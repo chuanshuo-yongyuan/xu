@@ -1,0 +1,48 @@
+<?php
+
+namespace {%namespace%};
+
+use app\common\service\{%className%}Service;
+use app\common\transformer\{%className%}Transformer;
+
+class {%className%}Event extends Event
+{
+    private ${%className%}Transformer;
+
+    public function __construct({%className%}Transformer ${%className%}Transformer)
+    {
+        $this->{%className%}Transformer = ${%className%}Transformer;
+    }
+
+    public function lists($where = [], $page = 1, $order = 'sort desc')
+    {
+        $lists = {%className%}Service::lists($where, $page, $order);
+        $count = $this->count($where);
+        $result['rows'] = $this->{%className%}Transformer->transformCollection($lists->all());
+        $result['total'] = $count;
+        $this->response($result);
+    }
+
+    public function infoById($id)
+    {
+        $info = {%className%}Service::infoById($id);
+        $result = $this->{%className%}Transformer->transform($info);
+        $this->response($result);
+    }
+
+    public function count($where = [])
+    {
+        return {%className%}Service::count($where);
+    }
+
+    public function add($data)
+    {
+        return {%className%}Service::add($data);
+    }
+
+    public function editById($data, $id)
+    {
+        return {%className%}Service::editById($data, $id);
+    }
+}
+
