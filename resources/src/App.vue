@@ -29,10 +29,6 @@ export default {
     ])
   },
   mounted () {
-    // this.$post('https://appkp.ccwb.cn/api/v1/news/getNewsDetailRelated', { cw_news_id: '201903291754091CKMIV' })
-    // this.$post('https://appkp.ccwb.cn/api/v1/news/getNewsCommentLists', { cw_news_id: '201903291754091CKMIV' })
-    // this.$post('https://appkp.ccwb.cn/api/v1/news/getNewsDetail', { cw_news_id: '201903291754091CKMIV' })
-    this.$toast('vant  toast')
   }
 }
 </script>

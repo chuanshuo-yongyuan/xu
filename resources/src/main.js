@@ -10,7 +10,29 @@ import Http from './libs/api/http'
 // import WechatAuth from './libs/wechat-auth'
 import { getDevice } from './utils/util'
 import { toCWLogin } from './utils/ccwbApp'
-import { Toast } from 'vant'
+import {
+  Toast,
+  Row,
+  Col,
+  Button,
+  Dialog,
+  Field,
+  DatetimePicker,
+  List,
+  Cell,
+  CellGroup
+} from 'vant'
+
+// 引入需要使用的 vant 组件
+Vue.use(Row)
+  .use(Col)
+  .use(Toast)
+  .use(Button)
+  .use(Dialog)
+  .use(Field)
+  .use(DatetimePicker)
+  .use(List)
+  .use(Cell).use(CellGroup)
 
 if (process.env.NODE_ENV !== 'production') {
   import('vconsole').then(VConsole => {
@@ -22,7 +44,6 @@ if (process.env.NODE_ENV !== 'production') {
 fastclick.attach(document.body)
 
 Vue.use(Http)
-Vue.use(Toast)
 // 处理图片懒加载
 Vue.use(VueLazyload, {
   loading: require('./assets/ccwb_common_default_normal.png'),
@@ -67,7 +88,7 @@ if (getDevice().isWechat && !wechatUserInfo) { // 如果是微信段,并且微�
 */
 
 // 为了兼容其他平台,进来以后,无条件获取地理位置一词
-store.dispatch('getUserPositionInfo')
+// store.dispatch('getUserPositionInfo')
 
 // 验证路由权限(是否登陆)
 router.beforeEach((to, from, next) => {

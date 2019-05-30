@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.1.0",
     "topthink/framework": "5.1.*",
     "topthink/think-helper": "^1.0",
     "lcobucci/jwt": "^3.2",
@@ -42,5 +42,11 @@
   },
   "require-dev": {
     "symfony/var-dumper": "^4.1"
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
   }
 }

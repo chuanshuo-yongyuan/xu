@@ -125,7 +125,7 @@ export function digitUppercase (n) {
     s = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + s
   }
   return head + s.replace(/(零.)*零元/, '元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整')
-};
+}
 
 /**
  * @desc   格式化${startTime}距现在的已过时间
@@ -144,8 +144,11 @@ export function formatPassTime (startTime) {
   if (month) return month + '个月前'
   if (day) return day + '天前'
   if (hour) return hour + '小时前'
-  if (min) return min + '分钟前'
-  else return '刚刚'
+  if (min) {
+    return min + '分钟前'
+  } else {
+    return '刚刚'
+  }
 }
 
 /**
@@ -193,6 +196,41 @@ export function countDownTime (endTime) {
   seconds = seconds < 10 ? '0' + seconds : seconds
 
   return `${days}天${hours}时${minutes}分${seconds}秒`
+}
+
+export function patternTime (time, fmt = 'yyyy-MM-dd') {
+  const date = new Date(time)
+  var o = {
+    'M+': date.getMonth() + 1, // 月份
+    'd+': date.getDate(), // 日
+    'h+': date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, // 小时
+    'H+': date.getHours(), // 小时
+    'm+': date.getMinutes(), // 分
+    's+': date.getSeconds(), // 秒
+    'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+    'S': date.getMilliseconds() // 毫秒
+  }
+  var week = {
+    '0': '/u65e5',
+    '1': '/u4e00',
+    '2': '/u4e8c',
+    '3': '/u4e09',
+    '4': '/u56db',
+    '5': '/u4e94',
+    '6': '/u516d'
+  }
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+  }
+  if (/(E+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? '/u661f/u671f' : '/u5468') : '') + week[date.getDay() + ''])
+  }
+  for (var k in o) {
+    if (new RegExp('(' + k + ')').test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+    }
+  }
+  return fmt
 }
 
 /**
@@ -354,7 +392,7 @@ export function getKeyName (keycode) {
 
     return ''
   }
-};
+}
 
 /**
  *
@@ -580,11 +618,16 @@ export function changeCase (str, type) {
     })
     return itemText
   }
+
   switch (type) {
     case 'FirstUpper':
-      return str.replace(/\b\w+\b/g, (word) => { return word.substring(0, 1).toUpperCase() + word.substring(1) })
+      return str.replace(/\b\w+\b/g, (word) => {
+        return word.substring(0, 1).toUpperCase() + word.substring(1)
+      })
     case 'FirstLower':
-      return str.replace(/\b\w+\b/g, (word) => { return word.substring(0, 1).toLowerCase() + word.substring(1) })
+      return str.replace(/\b\w+\b/g, (word) => {
+        return word.substring(0, 1).toLowerCase() + word.substring(1)
+      })
     case 'AllToggle':
       return ToggleCase(str)
     case 'AllUpper':

@@ -1,106 +1,109 @@
 <template>
   <div class="home">
-    <div>
-      <span class="iconfont icon-int"></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <van-cell-group>
+      <van-cell :title="item.step" :value="item.create_time" :label="item.message" v-for="(item,index) in lists"
+                :key="index"/>
+    </van-cell-group>
 
-    <div>
-      <i class="remixicon-admin-line"></i>
-      <i class="remixicon-admin-fill"></i>
-    </div>
+    <van-button type="primary" size="small" @click="show = true">新增</van-button>
+    <van-button type="info" size="small" @click="showTime = true">选择时间</van-button>
 
-    <!-- 上边框 -->
-    <div class="van-hairline--top"></div>
+    <van-dialog
+      v-model="show"
+      title="录入"
+      show-cancel-button
+      @confirm="confirm" size="small"
+    >
+      <van-field clearable  number="number" v-model="step" placeholder="请输入新的步数~"/>
+      <van-field clearable  number="textarea" v-model="message" placeholder="当是的消息描述~"
+                 :autosize="{ maxHeight: 100, minHeight: 50 }"/>
+    </van-dialog>
 
-    <!-- 下边框 -->
-    <div class="van-hairline--bottom"></div>
+    <van-datetime-picker
+      v-show="showTime"
+      v-model="currentDate"
+      type="date"
+      @confirm="confirmTime"
+      @cancel="cancelTime"
+      :min-date="minDate"
+      :max-date="maxDate"
+      class="datetime-picker"
+    />
 
-    <!-- 左边框 -->
-    <div class="van-hairline--left"></div>
-
-    <!-- 右边框 -->
-    <div class="van-hairline--right"></div>
-
-    <!-- 上下边框 -->
-    <div class="van-hairline--top-bottom"></div>
-
-    <!-- 全边框 -->
-    <div class="van-hairline--surround"></div>
-
-    <router-link to="about">about</router-link>
-    <!--    <video-player :video="video1" :isLive="isLive" @event="eventPlayerTime"/>-->
-    <div class="upload-area">
-      <upload style="text-align: center" @upload="uploadImgSuccess">
-        <img src="http://streaming.ccwb.cn/vod/rkn0Cb5K4/snap.jpg" alt="">
-      </upload>
-    </div>
   </div>
 </template>
 
 <script>
-// import videoPlayer from '@/components/video-player/video-player'
-import Upload from '@/components/upload'
+import { patternTime } from '../utils/util'
 
 export default {
   name: 'home',
-  components: {
-    // videoPlayer
-    Upload
-  },
   data () {
     return {
-      isLive: false,
-      video: {
-        url: 'http://livebroadcast.ccwb.cn/live/a1556008805128920.flv?auth_key=1587544805-7c7fb73bc7ce4f9599e8d4c6d59defba-0-737aff49bb65805522211527cce8268c',
-        pic: 'http://streaming.ccwb.cn/vod/rkn0Cb5K4/snap.jpg',
-        thumbnails: 'http://streaming.ccwb.cn/vod/rkn0Cb5K4/snap.jpg'
-      },
-      video1: {
-        quality: [
-          {
-            name: '点播1',
-            url: 'http://liverecord.ccwb.cn/qukan/user/1546848211090974/record/1555047030491955/record.m3u8'
-          }, {
-            name: '点播2',
-            url: 'http://liverecord.ccwb.cn/qukan/user/1544507371779975/upload/353f4679-e59a-4722-b6f7-ab6d873ec771.mp4'
-          }, {
-            name: '点播3',
-            url: 'http://streaming.ccwb.cn/vod/rkxUO16km/video.m3u8'
-          }
-        ],
-        defaultQuality: 0,
-        pic: 'http://streaming.ccwb.cn/vod/rkn0Cb5K4/snap.jpg',
-        url: 'http://liverecord.ccwb.cn/qukan/user/1546848211090974/record/1555047030491955/record.m3u8',
-        thumbnails: 'http://streaming.ccwb.cn/vod/rkn0Cb5K4/snap.jpg'
-      }
+      lists: [],
+      step: '',
+      message: '',
+      time: '',
+      showTime: false,
+      show: false,
+      minDate: new Date(2019, 1, 30),
+      maxDate: new Date(2025, 12, 31),
+      currentDate: new Date()
     }
   },
+  computed: {},
+  created () {
+    this.getLists()
+  },
   methods: {
-    redirect () {
-      console.log(123)
-      this.$router.push('/about')
+    confirm () {
+      this.$request('add', { step: this.step, message: this.message }).then(res => {
+        if (res.code === 200) {
+          this.getLists()
+        } else {
+          this.$toast(res.message)
+        }
+      })
     },
-    eventPlayerTime (type, time) {
-      console.log(type, time)
+    getLists () {
+      this.$request('lists', {
+        time: this.time
+      }).then(res => {
+        this.lists = res.data
+      })
     },
-    uploadImgSuccess (e) {
-      console.log(e)
+    confirmTime (e) {
+      this.time = patternTime(e)
+      this.getLists()
+      this.showTime = false
+    },
+    cancelTime () {
+      this.showTime = false
     }
   }
 }
 </script>
 <style lang="less">
-  .upload-area {
-    margin: 20px 0;
+  .datetime-picker {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+  }
 
-    img {
-      display: block;
-      margin: 0 auto;
-      max-height: 90px;
+  .van-col {
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 30px;
+    text-align: center;
+    background-clip: content-box;
+
+    &:nth-child(odd) {
+      background-color: #39a9ed;
+    }
+
+    &:nth-child(even) {
+      background-color: #66c6f2;
     }
   }
 </style>

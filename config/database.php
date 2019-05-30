@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '116.52.2.50',
+    'hostname'        => 'localhost',
     // 数据库名
-    'database'        => 'eating.ccwb.cn',
+    'database'        => 'comprehensive',
     // 用户名
     'username'        => 'root',
     // 密码
-    'password'        => 'GevGend*OpJeck3',
+    'password'        => 'admins88888',
     // 端口
     'hostport'        => '',
     // 连接dsn

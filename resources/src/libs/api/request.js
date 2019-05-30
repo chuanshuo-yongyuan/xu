@@ -13,7 +13,7 @@ import { toCWLogin } from '../../utils/ccwbApp'
  * @param toast 是否开启 toast
  * @returns {*}
  */
-export function request (method, opts, toast = true) {
+export function request (method, opts, toast = false) {
   // 如果有给 toast 参数则显示 loading 加载数据
   if (toast && typeof (toast) === 'boolean') {
     loading('加载中...')
@@ -27,9 +27,9 @@ export function request (method, opts, toast = true) {
       opts = {}
     }
     if (m.method === 'get') {
-      return apiGet(m.url, opts)
+      return apiGet(m.url, opts, toast)
     } else if (m.method === 'post') {
-      return apiPost(m.url, opts)
+      return apiPost(m.url, opts, toast)
     } else {
       return '非法请求'
     }
@@ -47,7 +47,7 @@ export function request (method, opts, toast = true) {
  * @param toast 是够开启请求 toast
  * @returns {Promise<any>}
  */
-export function apiPost (url, data, toast = true) {
+export function apiPost (url, data, toast = false) {
   if (toast && typeof (toast) === 'boolean') {
     loading('加载中...')
   } else if (toast && typeof (toast) === 'string') {
@@ -73,9 +73,9 @@ export function apiPost (url, data, toast = true) {
  * @param toast
  * @returns {Promise<any>}
  */
-export function apiGet (url, data, toast = true) {
+export function apiGet (url, data, toast = false) {
   if (toast && typeof (toast) === 'boolean') {
-    loading('加载中...')
+    loading('加载中sss...')
   } else if (toast && typeof (toast) === 'string') {
     loading(toast)
   }
@@ -126,11 +126,13 @@ export function response (data) {
  * 关闭 loading
  */
 export function closeLoading () {
-  close()
+  Toast.clear()
 }
+
 export function toast (msg) {
   Toast(msg)
 }
+
 export function loading () {
   Toast.loading({
     forbidClick: true, // 禁用背景点击
@@ -139,6 +141,7 @@ export function loading () {
     message: '加载中...'
   })
 }
+
 export function close () {
   Toast.clear()
 }

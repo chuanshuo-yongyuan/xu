@@ -37,9 +37,9 @@ const cdn = {
 
 module.exports = {
   // 基本路径
-  publicPath: isProduction ? '/ccwb-demo/' : '/',
+  publicPath: isProduction ? '/step/' : '/',
   // 输出文件目录
-  outputDir: 'ccwb-demo',
+  outputDir: 'step',
   // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录。
   assetsDir: './statics',
   // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径
@@ -94,8 +94,8 @@ module.exports = {
       config.plugins.push(
         new UglifyJsPlugin({
           uglifyOptions: {
+            warnings: false,
             compress: {
-              warnings: false,
               drop_console: true,
               drop_debugger: false,
               pure_funcs: ['console.log'] // 移除console

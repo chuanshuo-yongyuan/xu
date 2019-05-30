@@ -8,11 +8,6 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
-Route::get('admin', function () {
-    return view('admin');
-});
-
 Route::miss(function () {
     return json([
         'message' => '页面不存在',
@@ -20,6 +15,14 @@ Route::miss(function () {
         'data'    => [],
     ]);
 });
+Route::get('/', 'index/Index/index');
+
+Route::group('api', function () {
+    Route::get('/', 'index/Index/index');
+    Route::get('lists', 'index/Index/lists')->allowCrossDomain();
+    Route::post('add', 'index/Index/add')->allowCrossDomain();
+})->allowCrossDomain();
+
 
 return [
 
