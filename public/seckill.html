@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<form>
+  <div class="form-group">
+    <label for="good_id">产品 ID</label>
+    <input type="text" class="form-control" id="good_id" placeholder="产品 ID">
+  </div>
+  <button type="button" class="btn btn-primary" id="start">开始</button>
+  <button type="button" class="btn btn-secondary" id="end">结束</button>
+</form>
+
+<dvi id="info">
+</dvi>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"></script>
+
+<script>
+
+  var timer
+  // goods/detail
+  var OneToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6ImpkJUBkYWQ_SCJ9.eyJpc3MiOiJodHRwOlwvXC9jY3diLmNuIiwiYXVkIjoiaHR0cDpcL1wvY2N3Yi5jbiIsImp0aSI6ImpkJUBkYWQ_SCIsInVzZXJfaW5mbyI6eyJ1aWQiOiI1NSIsInNpZCI6IjU1IiwidXNlcmNvZGUiOiIyMDE2MTAyMDE0NDUyMVdDWkFNWCIsIm1vYmlsZSI6IjE4OTg4NDUwMTg1Iiwic3RhdHVzIjoiMSIsIm5pY2tuYW1lIjoiMTExMTExMTExMTExMTExIiwiaGVhZHBpYyI6Imh0dHBzOlwvXC9yZXMuY2N3Yi5jblwvVXBsb2FkXC9jY3diX2FwcFwvaW1hZ2VcL3VzZXJcLzIwMTgxMDI4XC8yMDE4MTAyODIxMDcwNENBVjFOSC5KUEVHIn19.QKf-e3LA_rU8RxgUZMJHiU53ZvARVRTelMbK6DdPebo';
+  // 地址ID 是 2
+
+  var TwoToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6ImpkJUBkYWQ_SCJ9.eyJpc3MiOiJodHRwOlwvXC9jY3diLmNuIiwiYXVkIjoiaHR0cDpcL1wvY2N3Yi5jbiIsImp0aSI6ImpkJUBkYWQ_SCIsInVzZXJfaW5mbyI6eyJ1aWQiOiIxMDM5NDY0Iiwic2lkIjoiMTAzOTQ2NCIsInVzZXJjb2RlIjoiMjAxODA2MTUxMjAzNDE5OVFZSjMiLCJtb2JpbGUiOiIxODY4NzAyMzExMyIsInN0YXR1cyI6IjEiLCJuaWNrbmFtZSI6Ilx1NTMzZlx1NTQwZCIsImhlYWRwaWMiOiJodHRwczpcL1wvcmVzLmNjd2IuY25cL1VwbG9hZFwvcGljXC8yMDE3MDMwOFwvMjAxNzAzMDgxNjU5MjZDV1dTSlYucG5nIn19.79QY4vK7J3uIK2hqfoOn_5kcwsQ3UROb0O8WQZb5V84';
+  // 地址 ID 是 60
+  var instanceOne = axios.create({
+    baseURL: 'https://ccwbspecial.ccwb.cn/tmall/',
+    timeout: 2000
+  });
+  var instanceTwo = axios.create({
+    baseURL: 'https://ccwbspecial.ccwb.cn/tmall/',
+    timeout: 2000
+  });
+  instanceOne.defaults.headers.common['Authorization'] = OneToken;
+  instanceTwo.defaults.headers.common['Authorization'] = TwoToken;
+
+  function seckillOne (good_id) {
+    instanceOne.post('goods/seckill', {
+      good_id: good_id,
+      address_id: 2,
+      trade_type: 'App'
+    }).then(res => {
+      $('<p> ONE:  ' + res.data.msg + '</p>').appendTo($('#info'))
+      if (res.data.success == 200 || res.data.success == 40405 ||  res.data.msg == '秒杀已结束') {
+        clearInterval(timer)
+      }
+    })
+  }
+
+  function seckillTwo (good_id) {
+    instanceTwo.post('goods/seckill', {
+      good_id: good_id,
+      address_id: 60,
+      trade_type: 'App'
+    }).then(res => {
+      $('<p> TWO:    ' + res.data.msg + '</p>').appendTo($('#info'))
+      if (res.data.success == 200 || res.data.success == 40405 || res.data.msg == '秒杀已结束') {
+        clearInterval(timer)
+      }
+    })
+  }
+
+
+  $(function () {
+    // 开始秒杀
+    $('#start').click(function () {
+      var good_id = $('#good_id').val();
+      if (!good_id) {
+        alert('产品 ID 呢?')
+        return false;
+      }
+      timer = setInterval(function () {
+        seckillOne(good_id)
+        seckillTwo(good_id)
+      }, 200)
+    })
+
+    // 结束秒杀
+    $('#end').click(function () {
+      clearInterval(timer)
+    })
+  })
+
+</script>
+
+</html>
