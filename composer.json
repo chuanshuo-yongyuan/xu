@@ -19,6 +19,13 @@
     "php": ">=7.1.0",
     "topthink/framework": "5.1.*",
     "topthink/think-helper": "^1.0",
+    "lcobucci/jwt": "^3.2",
+    "overtrue/wechat": "~4.0",
+    "topthink/think-swoole": "^2.0",
+    "lokielse/omnipay-alipay": "^3.0",
+    "lokielse/omnipay-wechatpay": "^3.0",
+    "lokielse/omnipay-unionpay": "^3.0",
+    "filp/whoops": "^2.2",
     "topthink/think-migration": "^2.0",
     "fzaninotto/faker": "^1.8",
     "php-curl-class/php-curl-class": "^8.6"
