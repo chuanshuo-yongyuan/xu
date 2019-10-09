@@ -2,6 +2,7 @@
 
 namespace app\index\controller;
 
+use \Curl\Curl;
 use app\common\event\IndexEvent;
 use app\common\model\StepsModel;
 use app\common\transformer\StepsTransformer;
@@ -32,6 +33,59 @@ class IndexController extends Controller
 
     public function info()
     {
+    }
+
+    public function wechatStep()
+    {
+        $randStep = mt_rand(34443, 35042);
+        $step = input('step', $randStep);
+
+        $curl = new Curl();
+
+        $salt = '8061FD';//salt
+
+
+        $account = 'coffin';//绑定微信的卓易账号
+        $timestamp = time();
+        $sign = md5($account . $salt . $timestamp);
+
+        $host = "http://weixin.droi.com/health/phone/index.php/SendWechat/getWxOpenid";
+        $curl->post($host, [
+            'accountId' => $account,
+            'timeStamp' => $timestamp,
+            'sign'      => $sign,
+        ]);
+
+        if ($curl->error) {
+            die('Error: ' . $curl->errorCode . ': ' . $curl->errorMessage . "\n");
+        } else {
+            $rep = json_decode($curl->response, true);
+            if ($rep['code'] !== 0) {
+                die('getWxOpenid:' . $rep['messsage'] . "\n");
+            }
+            $openid = $rep['openid'];
+            echo "WeChatOpenId: {$openid}\n";
+        }
+        echo "</br>";
+        echo "</br>";
+        $timestamp = time();
+        $sign = md5($account . $salt . $step . $salt . $timestamp . $salt . $openid);
+        $host = "http://weixin.droi.com/health/phone/index.php/SendWechat/stepSubmit";
+        $curl->post($host, [
+            'accountId' => $account,
+            'jibuNuber' => $step,
+            'timeStamp' => $timestamp,
+            'sign'      => $sign,
+        ]);
+
+        if ($curl->error) {
+            die('stepSubmit: ' . $curl->errorCode . ': ' . $curl->errorMessage . "\n");
+        } else {
+            $rep = json_decode($curl->response, true);
+            echo "stepSubmit: " . $rep['messsage'];
+        }
+
+        $curl->close();
     }
 
 

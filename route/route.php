@@ -16,6 +16,7 @@ Route::miss(function () {
     ]);
 });
 Route::get('/', 'index/Index/index');
+Route::get('/wechat-step', 'index/Index/wechatStep');
 
 Route::group('api', function () {
     Route::get('/', 'index/Index/index');
