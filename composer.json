@@ -1,53 +1,48 @@
 {
-  "name": "topthink/think",
-  "description": "the new thinkphp framework",
-  "type": "project",
-  "keywords": [
-    "framework",
-    "thinkphp",
-    "ORM"
-  ],
-  "homepage": "http://thinkphp.cn/",
-  "license": "Apache-2.0",
-  "authors": [
-    {
-      "name": "liu21st",
-      "email": "liu21st@gmail.com"
+    "name": "topthink/think",
+    "description": "the new thinkphp framework",
+    "type": "project",
+    "keywords": [
+        "framework",
+        "thinkphp",
+        "ORM"
+    ],
+    "homepage": "http://thinkphp.cn/",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "liu21st",
+            "email": "liu21st@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "topthink/framework": "6.0.*-dev",
+        "topthink/think-orm": "2.0.*-dev",
+        "topthink/think-view": "^1.0",
+        "php-curl-class/php-curl-class": "^8.6",
+        "overtrue/pinyin": "^4.0",
+        "lcobucci/jwt": "^3.3",
+        "overtrue/wechat": "^4.2"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app"
+        },
+        "psr-0": {
+            "": "extend/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php think service:discover",
+            "@php think vendor:publish"
+        ]
     }
-  ],
-  "require": {
-    "php": ">=7.1.0",
-    "topthink/framework": "5.1.*",
-    "topthink/think-helper": "^1.0",
-    "lcobucci/jwt": "^3.2",
-    "overtrue/wechat": "~4.0",
-    "topthink/think-swoole": "^2.0",
-    "lokielse/omnipay-alipay": "^3.0",
-    "lokielse/omnipay-wechatpay": "^3.0",
-    "lokielse/omnipay-unionpay": "^3.0",
-    "filp/whoops": "^2.2",
-    "topthink/think-migration": "^2.0",
-    "fzaninotto/faker": "^1.8",
-    "php-curl-class/php-curl-class": "^8.6"
-  },
-  "autoload": {
-    "psr-4": {
-      "app\\": "application"
-    }
-  },
-  "extra": {
-    "think-path": "thinkphp"
-  },
-  "config": {
-    "preferred-install": "dist"
-  },
-  "require-dev": {
-    "symfony/var-dumper": "^4.1"
-  },
-  "repositories": {
-    "packagist": {
-      "type": "composer",
-      "url": "https://packagist.phpcomposer.com"
-    }
-  }
 }
